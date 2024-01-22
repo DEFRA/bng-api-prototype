@@ -1,0 +1,8 @@
+{{- include "ffc-helm-library.deployment" (list . "bng-api-prototype.deployment") -}}
+{{- define "bng-api-prototype.deployment" -}}
+spec:
+  template:
+    spec:
+      containers:
+      - {{ include "ffc-helm-library.container" (list . "bng-api-prototype.container") }}
+{{- end -}}

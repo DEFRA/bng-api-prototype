@@ -1,10 +1,10 @@
 services:
-  ffc-template-node:
+  bng-api-prototype:
     build:
       context: .
       target: production
-    image: ffc-template-node
-    container_name: ffc-template-node
+    image: bng-api-prototype
+    container_name: bng-api-prototype
     environment:
-      APPINSIGHTS_CLOUDROLE: ffc-template-node-local
+      APPINSIGHTS_CLOUDROLE: bng-api-prototype-local
       APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}

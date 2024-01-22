@@ -1,8 +1,8 @@
 {
-  "name": "ffc-template-node",
+  "name": "bng-api-prototype",
   "version": "0.1.0",
-  "description": "description-of-project-goes-here",
-  "homepage": "https://github.com/DEFRA/ffc-template-node",
+  "description": "Prototype APIs for Biodiversity Net Gain",
+  "homepage": "https://github.com/DEFRA/bng-api-prototype",
   "main": "app/index.js",
   "scripts": {
     "pretest": "npm run test:lint",
