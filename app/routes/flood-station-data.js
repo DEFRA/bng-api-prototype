@@ -1,7 +1,7 @@
 const Wreck = require('@hapi/wreck')
 
-const fetchFloodStationData = async function () {
-  const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/E8980`
+const fetchFloodStationData = async function (stationId) {
+  const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`
 
   const { payload } = await Wreck.get(url, { json: true })
   return payload
@@ -9,10 +9,11 @@ const fetchFloodStationData = async function () {
 
 module.exports = {
   method: 'GET',
-  path: '/flood-station',
+  path: '/flood-station/{stationId}',
   handler: async (request, h) => {
-    const data = await fetchFloodStationData()
+    const stationId = request.params.stationId
+    const data = await fetchFloodStationData(stationId)
 
     return h.response(data)
-  },
+  }
 }
