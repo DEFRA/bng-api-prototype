@@ -1,18 +1,33 @@
 const Wreck = require('@hapi/wreck')
 
-const fetchFloodStationData = async function () {
-  const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/E8980`
+const fetchFloodStationData = async (stationId) => {
+  const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`
 
-  const { payload } = await Wreck.get(url, { json: true })
-  return payload
+  try {
+    const { payload } = await Wreck.get(url, { json: true })
+    return payload
+  } catch (error) {
+    console.error('Error fetching flood station data', error.message)
+    throw error
+  }
 }
 
 module.exports = {
   method: 'GET',
-  path: '/flood-station',
+  path: '/flood-station/{id}',
   handler: async (request, h) => {
-    const data = await fetchFloodStationData()
+    try {
+      const { id: stationId } = request.params
 
-    return h.response(data)
-  },
+      if (!stationId) {
+        return h.response('Missing parameter: stationId is required').code(400)
+      }
+
+      const data = await fetchFloodStationData(stationId)
+
+      return h.response(data).code(200)
+    } catch (error) {
+      return h.response(error.message).code(500)
+    }
+  }
 }
