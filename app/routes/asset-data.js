@@ -1,5 +1,8 @@
 const Wreck = require('@hapi/wreck')
 
+// url request example
+// http://localhost:3000/asset-data?lat=50.828848&lng=-0.24883&radius=5
+
 const fetchAssetData = async (lat, lng, radius) => {
   // https://environment.data.gov.uk/asset-management/maintained-asset.geojson?lat=50.828848&lng=-0.24883&radius=5
   const url = `https://environment.data.gov.uk/asset-management/maintained-asset.geojson?lat=${lat}&lng=${lng}&radius=${radius}`
