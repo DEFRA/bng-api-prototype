@@ -1,4 +1,7 @@
 const Wreck = require('@hapi/wreck')
+const Joi = require('joi')
+
+// http://localhost:3000/flood-station-by-id-radius/E8980?radius=1
 
 const fetchFloodStationData = async (stationId) => {
   const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`
@@ -31,22 +34,43 @@ const fetchAssetData = async (lat, lng, radius) => {
 module.exports = {
   method: 'GET',
   path: '/flood-station-by-id-radius/{stationId}',
-  handler: async (request, h) => {
-    try {
-      const { stationId } = request.params
-      const radius = request.query.radius
+  options: {
 
-      const stationData = await fetchFloodStationData(stationId)
-      const { lat, long } = stationData.items
+    handler: async (request, h) => {
+      try {
+        const { stationId } = request.params
+        const radius = request.query.radius
 
-      const assetIds = await fetchAssetData(lat, long, radius)
+        const stationData = await fetchFloodStationData(stationId)
+        const { lat, long } = stationData.items
 
-      const filteredAssetIds = assetIds.features.map((asset) => asset.id)
+        const assetIds = await fetchAssetData(lat, long, radius)
 
-      return h.response(filteredAssetIds).code(200)
-    } catch (error) {
-      console.error(error)
-      return h.response(error.message).code(500)
+        const filteredAssetIds = assetIds.features.map((asset) => asset.id)
+
+        return h.response(filteredAssetIds).code(200)
+      } catch (error) {
+        console.error(error)
+        return h.response(error.message).code(500)
+      }
+    },
+    description: 'Flood Station data by ID and radius',
+    notes: 'Get Flood Station data by Station ID and radius',
+    tags: ['api'],
+    validate: {
+      params: Joi.object({
+        stationId: Joi.string()
+          .required()
+          .description('the station ID of the flood station of interest')
+      }),
+      query: Joi.object({
+        radius: Joi.number()
+          .required()
+          .description('The radius around the flood station that you want the asset IDs shown')
+      })
+
     }
+
   }
+
 }

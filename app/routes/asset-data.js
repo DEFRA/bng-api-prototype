@@ -1,5 +1,4 @@
 const Wreck = require('@hapi/wreck')
-
 // url request example
 // http://localhost:3000/asset-data?lat=50.828848&lng=-0.24883&radius=5
 
