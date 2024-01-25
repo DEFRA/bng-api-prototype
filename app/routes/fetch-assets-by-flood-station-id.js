@@ -1,8 +1,6 @@
 const Wreck = require('@hapi/wreck')
 const Joi = require('joi')
 
-// http://localhost:3000/flood-station-by-id-radius/E8980?radius=1
-
 const fetchFloodStationData = async (stationId) => {
   const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`
 
@@ -16,7 +14,6 @@ const fetchFloodStationData = async (stationId) => {
 }
 
 const fetchAssetData = async (lat, lng, radius) => {
-  // https://environment.data.gov.uk/asset-management/maintained-asset.geojson?lat=50.828848&lng=-0.24883&radius=5
   const url = `https://environment.data.gov.uk/asset-management/maintained-asset.geojson?lat=${lat}&lng=${lng}&radius=${radius}`
   console.log(url)
 
@@ -33,7 +30,7 @@ const fetchAssetData = async (lat, lng, radius) => {
 
 module.exports = {
   method: 'GET',
-  path: '/flood-station-by-id-radius/{stationId}',
+  path: '/fetch-assets-by-flood-station-id/{stationId}',
   options: {
 
     handler: async (request, h) => {
@@ -54,23 +51,19 @@ module.exports = {
         return h.response(error.message).code(500)
       }
     },
-    description: 'Flood Station data by ID and radius',
-    notes: 'Get Flood Station data by Station ID and radius',
+    description: 'Asset IDs by station ID and radius',
     tags: ['api'],
     validate: {
       params: Joi.object({
         stationId: Joi.string()
           .required()
-          .description('the station ID of the flood station of interest')
+          .description('The station ID of the flood station of interest')
       }),
       query: Joi.object({
         radius: Joi.number()
           .required()
-          .description('The radius around the flood station that you want the asset IDs shown')
+          .description('The radius around the flood station to display asset IDs')
       })
-
     }
-
   }
-
 }
