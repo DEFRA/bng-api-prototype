@@ -25,9 +25,10 @@ The application provides an API to retrieve asset id's within the radius of a fl
 
 ### 1. Fetch Flood Station Data by ID and Radius
 
-- **Endpoint:** `/flood-station-by-id-radius/{stationId}`
+- **Endpoint:** `/fetch-assets-by-flood-station-id/{stationId}`
+- **Example Endpoint:** `/localhost:3000/fetch-assets-by-flood-station-id/E8980?radius=5`
 - **Method:** GET
-- **Description:** Fetch flood station data by station ID and radius.
+- **Description:** Fetch asset data by station ID and radius.
 - **Parameters:**
   - `stationId` (required): The station ID of the flood station of interest.
   - `radius` (required): The radius around the flood station to retrieve asset IDs.

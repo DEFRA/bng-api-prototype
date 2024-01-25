@@ -14,7 +14,7 @@ const routes = [].concat(
   require('./routes/healthz'),
   require('./routes/flood-station-data'),
   require('./routes/asset-data'),
-  require('./routes/flood-station-by-id-radius')
+  require('./routes/fetch-assets-by-flood-station-id')
 )
 
 const registerPlugins = async () => {
