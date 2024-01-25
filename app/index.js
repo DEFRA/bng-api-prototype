@@ -1,8 +1,10 @@
+// index.js
+
 const server = require('./server')
 
 const init = async () => {
-  await server.start()
-  console.log('Server running on %s', server.info.uri)
+  await server.registerPlugins() // Register plugins (including Swagger)
+  await server.startServer() // Start the server
 }
 
 process.on('unhandledRejection', (err) => {
