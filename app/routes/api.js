@@ -1,3 +1,4 @@
+// dir ./routes/api.js
 // Functions to fetch asset IDs by flood station ID and radius
 
 const Wreck = require('@hapi/wreck')
@@ -69,8 +70,6 @@ const swaggerOptions = {
 }
 
 module.exports = {
-  method: 'GET',
-  path: '/fetch-assets-by-flood-station-id/{stationId}',
-  handler: fetchAssetDataFilteredById,
-  options: swaggerOptions
+  fetchAssetDataFilteredById,
+  swaggerOptions
 }
