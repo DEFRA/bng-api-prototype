@@ -2,6 +2,7 @@
 // Functions to fetch asset IDs by flood station ID and radius
 
 const Wreck = require('@hapi/wreck')
+const Joi = require('joi')
 
 const fetchFloodStationData = async (stationId) => {
   const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`
@@ -49,6 +50,26 @@ const fetchAssetDataFilteredById = async (request, h) => {
   }
 }
 
+const swaggerTags = {
+  description: 'Asset IDs by station ID and radius',
+  tags: ['api'],
+  validate: {
+    params: Joi.object({
+      stationId: Joi.string()
+        .required()
+        .description('The station ID of the flood station of interest')
+    }),
+    query: Joi.object({
+      radius: Joi.number()
+        .required()
+        .description(
+          'The radius around the flood station to display asset IDs'
+        )
+    })
+  }
+}
+
 module.exports = {
-  fetchAssetDataFilteredById
+  fetchAssetDataFilteredById,
+  swaggerTags
 }

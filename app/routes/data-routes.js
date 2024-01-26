@@ -1,6 +1,6 @@
 // dir ./routes/data-routes.js
 const fetchAssetDataFilteredById = require('./api').fetchAssetDataFilteredById
-const swaggerTags = require('../swagger').swaggerTags
+const swaggerTags = require('./api').swaggerTags
 
 console.log('fetchAssetDataFilteredById:', fetchAssetDataFilteredById)
 
