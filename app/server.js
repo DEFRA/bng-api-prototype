@@ -12,7 +12,7 @@ const server = Hapi.server({
 const routes = [].concat(
   require('./routes/healthy'),
   require('./routes/healthz'),
-  require('./routes/fetch-assets-by-flood-station-id')
+  require('./routes/api')
 )
 
 const registerPlugins = async () => {
