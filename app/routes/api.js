@@ -32,63 +32,62 @@ const fetchAssetData = async (lat, lng, radius) => {
   }
 }
 
-const fetchAssetDataFilteredById = async (request, h) => {
-  try {
-    const { stationId } = request.params
-    const radius = request.query.radius
-
-    const { error: stationIdError } = Joi.string().max(12).validate(stationId)
-
-    if (stationIdError) {
-      const errorMessage = `Invalid stationId: ${stationIdError.message}`
-      return h.response({ error: errorMessage }).code(400)
-    }
-
-    const { error } = Joi.object({
-      radius: Joi.number().min(1.0).max(50.0).required()
-    }).validate({ radius })
-
-    if (error) {
-      const errorMessage = `Invalid radius: ${error.message}`
-      return h.response({ error: errorMessage }).code(400)
-    }
-
-    const stationData = await fetchFloodStationData(stationId)
-    const { lat, long } = stationData.items
-
-    const assetIds = await fetchAssetData(lat, long, radius)
-
-    const filteredAssetIds = assetIds.features.map((asset) => asset.id)
-
-    return h.response(filteredAssetIds).code(200)
-  } catch (error) {
-    console.error(error)
-    return h.response({ error: error.message }).code(500)
-  }
-}
-
-const swaggerTags = {
-  description: 'Asset IDs by station ID and radius',
-  tags: ['api'],
-  validate: {
-    params: Joi.object({
-      stationId: Joi.string()
-        .required()
-        .max(12)
-        .description(
-          'The station ID of the flood station of interest')
-    }),
-    query: Joi.object({
-      radius: Joi.number()
-        .required()
-        .description(
-          'The radius around the flood station to display asset IDs'
-        )
-    })
-  }
-}
-
 module.exports = {
-  fetchAssetDataFilteredById,
-  swaggerTags
+  method: 'GET',
+  path: '/fetch-assets-by-flood-station-id/{stationId}',
+  options: {
+    handler: async (request, h) => {
+      try {
+        const { stationId } = request.params
+        const radius = request.query.radius
+
+        const { error: stationIdError } = Joi.string()
+          .max(12)
+          .validate(stationId)
+
+        if (stationIdError) {
+          const errorMessage = `Invalid stationId: ${stationIdError.message}`
+          return h.response({ error: errorMessage }).code(400)
+        }
+
+        const { error } = Joi.object({
+          radius: Joi.number().min(1.0).max(50.0).required()
+        }).validate({ radius })
+
+        if (error) {
+          const errorMessage = `Invalid radius: ${error.message}`
+          return h.response({ error: errorMessage }).code(400)
+        }
+
+        const stationData = await fetchFloodStationData(stationId)
+        const { lat, long } = stationData.items
+
+        const assetIds = await fetchAssetData(lat, long, radius)
+
+        const filteredAssetIds = assetIds.features.map((asset) => asset.id)
+
+        return h.response(filteredAssetIds).code(200)
+      } catch (error) {
+        console.error(error)
+        return h.response({ error: error.message }).code(500)
+      }
+    },
+    description: 'Asset IDs by station ID and radius',
+    tags: ['api'],
+    validate: {
+      params: Joi.object({
+        stationId: Joi.string()
+          .required()
+          .max(12)
+          .description('The station ID of the flood station of interest')
+      }),
+      query: Joi.object({
+        radius: Joi.number()
+          .required()
+          .description(
+            'The radius around the flood station to display asset IDs'
+          )
+      })
+    }
+  }
 }

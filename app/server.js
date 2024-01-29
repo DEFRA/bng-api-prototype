@@ -7,17 +7,17 @@ const Vision = require('@hapi/vision')
 const HapiSwagger = require('hapi-swagger')
 const swaggerOptions = require('./swagger')
 
-const server = Hapi.server({
-  port: process.env.PORT
-})
+async function createServer () {
+  const server = Hapi.server({
+    port: process.env.PORT
+  })
 
-const routes = [].concat(
-  require('./routes/healthy'),
-  require('./routes/healthz'),
-  require('./routes/data-routes')
-)
+  const routes = [].concat(
+    require('./routes/healthy'),
+    require('./routes/healthz'),
+    require('./routes/api')
+  )
 
-const registerPlugins = async () => {
   await server.register([
     Inert,
     Vision,
@@ -26,15 +26,10 @@ const registerPlugins = async () => {
       options: swaggerOptions
     }
   ])
-}
 
-const startServer = async () => {
   server.route(routes)
-  await server.start()
-  console.log('Server running on %s', server.info.uri)
+
+  return server
 }
 
-module.exports = {
-  registerPlugins,
-  startServer
-}
+module.exports = createServer

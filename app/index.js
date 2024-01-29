@@ -1,15 +1,14 @@
-// ./index.js
-
-const server = require('./server')
+const createServer = require('./server')
 
 const init = async () => {
-  await server.registerPlugins() // Register plugins (including Swagger)
-  await server.startServer() // Start the server
+  try {
+    const server = await createServer()
+    await server.start()
+    console.log(`Server running at: ${server.info.uri}`)
+  } catch (err) {
+    console.error('Error starting server', err)
+    process.exit(1)
+  }
 }
-
-process.on('unhandledRejection', (err) => {
-  console.log(err)
-  process.exit(1)
-})
 
 init()
