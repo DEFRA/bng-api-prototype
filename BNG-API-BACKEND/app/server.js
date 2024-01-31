@@ -9,7 +9,12 @@ const swaggerOptions = require('./swagger')
 
 async function createServer () {
   const server = Hapi.server({
-    port: process.env.PORT
+    port: process.env.PORT,
+    routes:{
+      cors: {
+        origin: ['http://localhost:3001'] // frontend address
+      }
+    }
   })
 
   const routes = [].concat(

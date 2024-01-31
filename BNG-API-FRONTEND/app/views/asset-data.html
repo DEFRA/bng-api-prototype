@@ -24,11 +24,49 @@
         This is a paragraph of text. It explains in more detail what has happened and wraps across several lines.
       </p>
 
-      <p>
-        Read more <a href="/path/of/page">about this topic</a>.
-      </p>
+      <div id="dataDiv">
+
+      </div>
 
     </div>
+    <script>
+      // Fetch data from your backend
+      fetch('http://localhost:3000/fetch-assets-by-flood-station-id/E8980?radius=5')
+        .then(response => response.json()) // Parse the data as JSON
+        .then(assetData => {
+          // Now you have your data and you can use it in your frontend
+          console.log(assetData);
+
+          const dataDiv = document.getElementById('dataDiv');
+
+          const assetDataTable = document.createElement('table');
+
+          assetData.forEach(element => {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+
+          //creating link and set its url to the item
+          const link = document.createElement('a');
+          link.href =element
+          link.textContent =element
+
+          cell.appendChild(link);
+          row.appendChild(cell);
+
+          assetDataTable.appendChild(row);
+
+          });
+          // Display it in the 'dataDiv' div
+          dataDiv.appendChild(assetDataTable);
+        })
+        .catch(error => console.error('Error:', error));
+
+      const dataDiv = document.getElementById('dataDiv');
+    
+    </script>
+    <script src="/BNG-API-FRONTEND/app/assets/javascripts/fetch-asset-data.js"></script>
+    
   </div>
+
 
 {% endblock %}
