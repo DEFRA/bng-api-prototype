@@ -69,7 +69,8 @@
       </p>
 
       <form action="/asset-data" method="get" novalidate>
-
+        <input type="hidden" name="flood-station-id" value="{{ data['flood-station-id'] }}">
+        <input type="hidden" name="searchRadius" value="{{data['searchRadius']}}">
         {{ govukButton({
           text: "Accept and send"
         }) }}

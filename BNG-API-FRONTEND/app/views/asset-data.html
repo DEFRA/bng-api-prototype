@@ -17,11 +17,11 @@
     <div class="govuk-grid-column-two-thirds">
 
       <h1 class="govuk-heading-l">
-        Heading goes here
+        Flood Station Asset Data
       </h1>
 
       <p>
-        This is a paragraph of text. It explains in more detail what has happened and wraps across several lines.
+        The Flood Station Asset Data is shown as a list of links below. Click on a link to find out more information about it.
       </p>
 
       <div id="dataDiv">
@@ -30,8 +30,16 @@
 
     </div>
     <script>
+
+      //getting URL parameters
+      const urlParams = new URLSearchParams(window.location.search)
+      const floodStationId = urlParams.get('flood-station-id')
+      const searchRadius =urlParams.get('searchRadius')
+
       // Fetch data from your backend
-      fetch('http://localhost:3000/fetch-assets-by-flood-station-id/E8980?radius=5')
+      //`http://localhost:3000/fetch-assets-by-flood-station-id/E8980?radius=5`)
+
+      fetch(`http://localhost:3000/fetch-assets-by-flood-station-id/${floodStationId}?radius=${searchRadius}`)
         .then(response => response.json()) // Parse the data as JSON
         .then(assetData => {
           // Now you have your data and you can use it in your frontend
@@ -49,6 +57,9 @@
           const link = document.createElement('a');
           link.href =element
           link.textContent =element
+          
+          //when a link is clicked a new tab will open
+          link.target ="_blank"
 
           cell.appendChild(link);
           row.appendChild(cell);
