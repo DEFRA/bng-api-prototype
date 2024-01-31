@@ -17,57 +17,27 @@
     <div class="govuk-grid-column-two-thirds">
 
       <form class="form" action="/review" method="post">
-
-        {% from "govuk/components/radios/macro.njk" import govukRadios %}
+        
         {% from "govuk/components/input/macro.njk" import govukInput %}
-        
-        {% set textHtml %}
-        {{ govukInput({
-          name: "inputRadius",
-          type: "text",
-          classes: "govuk-!-width-one-third",
-          label: {
-            text: "Number between 1 and 50"
-          }
-        }) }}
-        {% endset -%}
-        
-        {{ govukRadios({
-          name: "radiusSelection",
-          value:data['radiusSelection'],
-          fieldset: {
-            legend: {
-              text: "Which radius would you like to use?",
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--l"
-            }
-          },
-          hint: {
-            text: "Select one option."
-          },
-          items: [
-            {
-              value: "1",
-              text: "1"
-            },
-            {
-              value: "5",
-              text: "5"
-            },
-            {
-              value: "10",
-              text: "10"
-            },
-            {
-              value: "50",
-              text: "Enter-Radius",
-              type: "text",
-              conditional: {
-                html: textHtml
-              }
-            }
-          ]
-        }) }}
+
+{{ govukInput({
+  name: "searchRadius",
+  label: {
+    text: "What is search radius around the flood station?",
+    classes: "govuk-label--l",
+    isPageHeading: true
+  },
+  classes: "govuk-input--width-10",
+  hint: {
+    text: "Any value from 1 to 50"
+  } 
+  ,
+  suffix: {
+    text: "km"
+  },
+  classes: "govuk-input--width-5",
+  spellcheck: false
+}) }}
 
 
         {{ govukButton({
